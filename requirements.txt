@@ -1,0 +1,4 @@
+# Pinned, known-good runtime versions (all released in 2022).
+# `pip install .` only needs rdkit>=2022.3.3; this file is for reproducible environments.
+rdkit==2022.9.5
+numpy==1.23.5

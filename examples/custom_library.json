@@ -1,0 +1,23 @@
+{
+  "description": "Example user library. Load it with:  synth-path-helper --library examples/custom_library.json analyze cyclohexanone",
+  "transformations": [
+    {
+      "id": "baeyer_villiger",
+      "name": "Baeyer-Villiger oxidation of a cyclic ketone to a lactone",
+      "category": "Oxidation",
+      "mechanism": "Criegee intermediate; the more substituted carbon migrates to oxygen",
+      "triggers": ["ketone"],
+      "smarts": "[#6:3][CX3;R:1](=[OX1:2])[#6;R:4]>>[#6:3][C:1](=[O:2])O[#6:4]",
+      "reagents": ["mCPBA"],
+      "catalysts": [],
+      "solvents": ["CH2Cl2"],
+      "conditions": "Room temperature. Migratory aptitude: 3° > 2° ~ aryl > 1° > methyl.",
+      "alternatives": ["H2O2 / Lewis acid"],
+      "exhaustive": false,
+      "cautions": [
+        {"if_present": ["alkene"], "message": "{group} would be epoxidised by mCPBA as well.", "severity": "warn"}
+      ],
+      "example": {"reactants": "O=C1CCCCC1", "major": "O=C1CCCCCO1"}
+    }
+  ]
+}

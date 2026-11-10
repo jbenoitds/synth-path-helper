@@ -1,0 +1,209 @@
+{
+  "version": 1,
+  "description": "SMARTS definitions for functional groups recognised by synth-path-helper. The first atom of each pattern is the 'anchor' atom used to count distinct occurrences.",
+  "groups": [
+    {
+      "id": "alcohol_primary",
+      "name": "Primary alcohol",
+      "family": "Alcohols & phenols",
+      "smarts": "[OX2H][CX4;H2,H3;!$(C([OX2H])[O,N,S,F,Cl,Br,I])]",
+      "notes": "R-CH2-OH. Oxidised to an aldehyde (PCC, DMP, Swern) or to a carboxylic acid (Jones, KMnO4)."
+    },
+    {
+      "id": "alcohol_secondary",
+      "name": "Secondary alcohol",
+      "family": "Alcohols & phenols",
+      "smarts": "[OX2H][CX4H1;!$(C([OX2H])[O,N,S,F,Cl,Br,I])]([#6])[#6]",
+      "notes": "R2CH-OH. Oxidised to a ketone; cannot be oxidised further without C-C cleavage."
+    },
+    {
+      "id": "alcohol_tertiary",
+      "name": "Tertiary alcohol",
+      "family": "Alcohols & phenols",
+      "smarts": "[OX2H][CX4H0;!$(C([OX2H])[O,N,S,F,Cl,Br,I])]([#6])([#6])[#6]",
+      "notes": "R3C-OH. No alpha-H, so not oxidised by PCC or Jones. Readily undergoes SN1 and E1 via a tertiary carbocation."
+    },
+    {
+      "id": "phenol",
+      "name": "Phenol",
+      "family": "Alcohols & phenols",
+      "smarts": "[OX2H]c",
+      "notes": "Ar-OH. pKa ~10; strongly activating ortho/para director in EAS."
+    },
+    {
+      "id": "aldehyde",
+      "name": "Aldehyde",
+      "family": "Carbonyls",
+      "smarts": "[CX3;$([CX3H1](=O)[#6]),$([CX3H2]=O)]=[OX1]",
+      "notes": "R-CHO. Reduced by NaBH4 to a primary alcohol; easily oxidised to a carboxylic acid."
+    },
+    {
+      "id": "ketone",
+      "name": "Ketone",
+      "family": "Carbonyls",
+      "smarts": "[CX3]([#6])([#6])=[OX1]",
+      "notes": "R2C=O. Reduced by NaBH4 to a secondary alcohol; resistant to mild oxidants."
+    },
+    {
+      "id": "carboxylic_acid",
+      "name": "Carboxylic acid",
+      "family": "Carboxylic acids & derivatives",
+      "smarts": "[CX3](=[OX1])[OX2H1]",
+      "notes": "R-COOH. pKa ~4-5. Reduced only by strong hydride donors (LiAlH4, BH3)."
+    },
+    {
+      "id": "ester",
+      "name": "Ester",
+      "family": "Carboxylic acids & derivatives",
+      "smarts": "[CX3;!$(C[NX3])](=[OX1])[OX2H0][#6;!$(C=O)]",
+      "notes": "R-COOR'. Hydrolysed by NaOH (saponification); reduced by LiAlH4 but not by NaBH4."
+    },
+    {
+      "id": "amide",
+      "name": "Amide",
+      "family": "Carboxylic acids & derivatives",
+      "smarts": "[CX3](=[OX1])[NX3]",
+      "notes": "R-CONR'2. Least reactive acid derivative; hydrolysis needs strong acid or base and heat."
+    },
+    {
+      "id": "acyl_halide",
+      "name": "Acyl halide",
+      "family": "Carboxylic acids & derivatives",
+      "smarts": "[CX3](=[OX1])[Cl,Br]",
+      "notes": "R-COCl. Most reactive acid derivative; reacts with water, alcohols and amines."
+    },
+    {
+      "id": "anhydride",
+      "name": "Acid anhydride",
+      "family": "Carboxylic acids & derivatives",
+      "smarts": "[CX3](=[OX1])[OX2][CX3]=[OX1]",
+      "notes": "(RCO)2O. Acylating agent, a little milder than acyl chlorides."
+    },
+    {
+      "id": "nitrile",
+      "name": "Nitrile",
+      "family": "Carboxylic acids & derivatives",
+      "smarts": "[CX2]#[NX1]",
+      "notes": "R-C#N. Hydrolysed to a carboxylic acid; reduced by LiAlH4 to a primary amine."
+    },
+    {
+      "id": "alkene",
+      "name": "Alkene",
+      "family": "Hydrocarbons",
+      "smarts": "[CX3]=[CX3]",
+      "notes": "C=C. Nucleophilic pi bond; electrophilic additions follow Markovnikov's rule unless the mechanism is radical or concerted (hydroboration)."
+    },
+    {
+      "id": "alkyne",
+      "name": "Alkyne",
+      "family": "Hydrocarbons",
+      "smarts": "[CX2]#[CX2]",
+      "notes": "C#C. Can be reduced to a cis-alkene (Lindlar), a trans-alkene (Na/NH3) or an alkane (H2, Pd/C)."
+    },
+    {
+      "id": "alkyne_terminal",
+      "name": "Terminal alkyne",
+      "family": "Hydrocarbons",
+      "smarts": "[CX2H1]#[CX2]",
+      "notes": "R-C#C-H. The sp C-H is acidic (pKa ~25), so NaNH2 makes an acetylide nucleophile."
+    },
+    {
+      "id": "arene",
+      "name": "Benzene ring",
+      "family": "Hydrocarbons",
+      "smarts": "c1ccccc1",
+      "notes": "Aromatic ring. Undergoes electrophilic aromatic substitution (EAS); existing substituents set the regiochemistry."
+    },
+    {
+      "id": "alkyl_halide_primary",
+      "name": "Primary (or methyl) alkyl halide",
+      "family": "Halides",
+      "smarts": "[Cl,Br,I][CX4;H2,H3]",
+      "notes": "R-CH2-X. Good SN2 substrate; with bulky bases E2 can compete."
+    },
+    {
+      "id": "alkyl_halide_secondary",
+      "name": "Secondary alkyl halide",
+      "family": "Halides",
+      "smarts": "[Cl,Br,I][CX4H1]([#6])[#6]",
+      "notes": "R2CH-X. SN2 and E2 compete; strong, basic nucleophiles favour E2."
+    },
+    {
+      "id": "alkyl_halide_tertiary",
+      "name": "Tertiary alkyl halide",
+      "family": "Halides",
+      "smarts": "[Cl,Br,I][CX4H0]([#6])([#6])[#6]",
+      "notes": "R3C-X. No SN2. E2 with strong base; SN1/E1 in polar protic solvents."
+    },
+    {
+      "id": "aryl_halide",
+      "name": "Aryl halide",
+      "family": "Halides",
+      "smarts": "[F,Cl,Br,I]c",
+      "notes": "Ar-X. Inert to SN1/SN2; forms Grignard reagents (Br, I) and couples under Pd catalysis."
+    },
+    {
+      "id": "grignard",
+      "name": "Grignard reagent",
+      "family": "Organometallics",
+      "smarts": "[Mg]([#6])[Cl,Br,I]",
+      "notes": "R-MgX. Strong carbon nucleophile and base; destroyed by water and alcohols."
+    },
+    {
+      "id": "amine_primary",
+      "name": "Primary aliphatic amine",
+      "family": "Nitrogen compounds",
+      "smarts": "[NX3;H2;!$(NC=[O,S,N]);!$(N[a])][CX4]",
+      "notes": "R-NH2. Basic (pKaH ~10) and nucleophilic."
+    },
+    {
+      "id": "amine_secondary",
+      "name": "Secondary aliphatic amine",
+      "family": "Nitrogen compounds",
+      "smarts": "[NX3;H1;!$(NC=[O,S,N]);!$(N[a])]([CX4])[CX4]",
+      "notes": "R2NH. Basic and nucleophilic."
+    },
+    {
+      "id": "amine_tertiary",
+      "name": "Tertiary aliphatic amine",
+      "family": "Nitrogen compounds",
+      "smarts": "[NX3;H0;!$(NC=[O,S,N]);!$(N[a])]([CX4])([CX4])[CX4]",
+      "notes": "R3N. Base; cannot be acylated."
+    },
+    {
+      "id": "aniline",
+      "name": "Aromatic amine (aniline)",
+      "family": "Nitrogen compounds",
+      "smarts": "[NX3;H2,H1;!$(NC=[O,S,N])]c",
+      "notes": "Ar-NH2. Strong ortho/para activator. Ar-NH2 forms diazonium salts (NaNO2, HCl) for Sandmeyer chemistry."
+    },
+    {
+      "id": "nitro",
+      "name": "Nitro group",
+      "family": "Nitrogen compounds",
+      "smarts": "[NX3+](=[OX1])[OX1-]",
+      "notes": "R-NO2. Strong meta-directing deactivator; reduced to an amine (Sn/HCl, Fe/HCl, H2/Pd)."
+    },
+    {
+      "id": "ether",
+      "name": "Ether",
+      "family": "Ethers & epoxides",
+      "smarts": "[OX2;!r3]([#6;!$(C=[O,S,N])])[#6;!$(C=[O,S,N])]",
+      "notes": "R-O-R'. Fairly unreactive; common solvents (Et2O, THF). Cleaved by HI or HBr."
+    },
+    {
+      "id": "epoxide",
+      "name": "Epoxide",
+      "family": "Ethers & epoxides",
+      "smarts": "[OX2r3]1[#6r3][#6r3]1",
+      "notes": "Strained three-membered cyclic ether. Opened by nucleophiles: at the less hindered carbon under basic conditions, at the more substituted carbon under acidic conditions."
+    },
+    {
+      "id": "thiol",
+      "name": "Thiol",
+      "family": "Sulfur compounds",
+      "smarts": "[SX2H][#6]",
+      "notes": "R-SH. More acidic and nucleophilic than alcohols; oxidised easily to disulfides."
+    }
+  ]
+}
