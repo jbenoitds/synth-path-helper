@@ -1,8 +1,6 @@
-*November 6, 2026*
-
 # synth-path-helper
 
-**A rule-based assistant for organic chemistry: give it a molecule as SMILES and it finds the functional groups, predicts the products of the reactions those groups can undergo, and tells you which reagents, catalysts and solvents to use.**
+A rule-based helper for organic chemistry. Give it a molecule (SMILES or a common name) and it finds the functional groups, predicts the products of the reactions those groups can undergo, and lists the reagents, catalysts and solvents to use.
 
 ```text
 $ synth-path-helper ethanol          # output trimmed
@@ -19,44 +17,30 @@ $ synth-path-helper ethanol          # output trimmed
 ...
 ```
 
-The project grew out of the foundational undergraduate organic chemistry lectures and labs at the Université de Montréal (UdeM). It encodes the "functional group in, reagent and product out" reasoning taught in first- and second-year courses as explicit, testable rules. Under the hood it is a small showcase of **pattern matching on chemical graphs** with [RDKit](https://www.rdkit.org/), plus a **structured, data-driven reaction library** stored as plain JSON.
+I started it during my first organic chemistry courses and labs at the Université de Montréal, to have the course's "functional group + reagent → product" rules in one place I could query. Technically it is SMARTS pattern matching on molecular graphs with [RDKit](https://www.rdkit.org/), plus a reaction library stored as plain JSON that you can extend.
 
----
+## Project history
 
-## Contents
-
-- [Features](#features)
-- [Installation](#installation)
-- [Quick start (command line)](#quick-start-command-line)
-- [Quick start (Python)](#quick-start-python)
-- [How it works](#how-it-works)
-- [What the library covers](#what-the-library-covers)
-- [Adding your own reactions](#adding-your-own-reactions)
-- [Project layout](#project-layout)
-- [Running the tests](#running-the-tests)
-- [Limitations](#limitations)
-- [License](#license)
-
----
+First version in March 2023. I wrote the code myself and asked Claude, an AI assistant, to review it. Until November 2026 it only existed on my laptop, without version control, which is why the repository starts with one commit. The README was rewritten with Claude's help when I published it.
 
 ## Features
 
-- **Functional-group perception**: 29 groups defined as SMARTS patterns. It tells primary, secondary and tertiary alcohols apart, as well as alcohols from phenols, esters from ethers and amines from anilines.
-- **69 named transformations** across oxidation, reduction, additions, substitutions, eliminations, acid-derivative chemistry, Grignard/Wittig C–C bond formation and electrophilic aromatic substitution. Each one carries its **reagents, catalysts, solvents, conditions, mechanism and alternatives**.
-- **Major vs minor products**, ranked by textbook selectivity rules: **Markovnikov / anti-Markovnikov**, **Zaitsev / Hofmann** and **EAS directing effects** (ortho/para vs meta, activation strength, steric hindrance).
-- **Chemoselectivity warnings**. For example, "LiAlH4 will also reduce the ketone", "NaBH4 leaves the ester alone" or "Friedel–Crafts fails on a nitro-substituted ring".
-- **Excess reagent vs one equivalent**: with several reactive sites (a diol, a diene) it shows both the fully converted product and the single-site products.
-- **Two-component reactions** (Fischer esterification, Williamson ether synthesis, Grignard addition, reductive amination, and more). Pass a mixture such as `"CC(=O)O.CCO"`. If the partner is missing, the tool suggests one.
-- **Multi-step route search**: a breadth-first search over the library finds short synthetic routes, e.g. toluene → *p*-nitrobenzoic acid (nitrate *first*, then oxidise).
-- **Common names** for about 60 everyday compounds (`cyclohexanol`, `toluene`, `acetone`, …) in addition to SMILES.
-- **Text, JSON or SVG** output; a Python API; user-extensible JSON libraries.
+- Functional-group perception: 29 groups defined as SMARTS patterns. It tells primary, secondary and tertiary alcohols apart, as well as alcohols from phenols, esters from ethers and amines from anilines.
+- 69 named transformations across oxidation, reduction, additions, substitutions, eliminations, acid-derivative chemistry, Grignard/Wittig C–C bond formation and electrophilic aromatic substitution. Each one carries its reagents, catalysts, solvents, conditions, mechanism and alternatives.
+- Major vs minor products, ranked by textbook selectivity rules: Markovnikov / anti-Markovnikov, Zaitsev / Hofmann and EAS directing effects (ortho/para vs meta, activation strength, steric hindrance).
+- Chemoselectivity warnings. For example, "LiAlH4 will also reduce the ketone", "NaBH4 leaves the ester alone" or "Friedel–Crafts fails on a nitro-substituted ring".
+- Excess reagent vs one equivalent: with several reactive sites (a diol, a diene) it shows both the fully converted product and the single-site products.
+- Two-component reactions (Fischer esterification, Williamson ether synthesis, Grignard addition, reductive amination, and more). Pass a mixture such as `"CC(=O)O.CCO"`. If the partner is missing, the tool suggests one.
+- Multi-step route search: a breadth-first search over the library finds short synthetic routes, e.g. toluene → *p*-nitrobenzoic acid (nitrate *first*, then oxidise).
+- Common names for about 60 everyday compounds (`cyclohexanol`, `toluene`, `acetone`, …) in addition to SMILES.
+- Text, JSON or SVG output; a Python API; user-extensible JSON libraries.
 
 ## Installation
 
-The tool needs Python 3.8–3.11 and RDKit (any release from 2022.03 onward). Every dependency is a release from 2022 or earlier, and the pinned versions in `requirements.txt` are the ones it was developed and tested with.
+Python 3.8–3.11 and RDKit 2022.03 or later. `requirements.txt` pins the versions I developed and tested with.
 
 ```bash
-git clone https://github.com/<you>/synth-path-helper.git
+git clone https://github.com/jbenoitds/synth-path-helper.git
 cd synth-path-helper
 python -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
@@ -304,7 +288,7 @@ The suite has 249 tests. They cover group detection (including the near-misses: 
 
 ## Limitations
 
-This is a **teaching and reasoning aid, not a reaction predictor for the lab**. The rules are the ones taught in undergraduate courses, and real chemistry has more exceptions.
+Keep in mind that this is a study aid, **not** a reaction predictor for the lab: the rules are the ones taught in undergraduate courses, and real chemistry has a lot more exceptions.
 
 - No kinetics, thermodynamics, yields or real product ratios. "Major" means *favoured by the textbook rule*.
 - Carbocation **rearrangements** (hydride or methyl shifts) are mentioned in the conditions but not generated.
@@ -313,7 +297,7 @@ This is a **teaching and reasoning aid, not a reaction predictor for the lab**. 
 - SN2/E2 competition is simplified: substrate class picks the template, and a warning covers the borderline cases.
 - The route finder explores only library reactions and stops at the shortest routes. It does not judge cost, protecting-group strategy beyond the few included, or practicality.
 
-Contributions of new transformations (with an `example` so they are tested automatically) are welcome.
+If you add a transformation, give it an `example`: the tests will check it automatically. Pull requests are welcome.
 
 ## License
 

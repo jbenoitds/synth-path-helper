@@ -9,7 +9,7 @@ description = "Rule-based functional-group detection and reaction prediction for
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.8"
-authors = [{ name = "synth-path-helper contributors" }]
+authors = [{ name = "Jean-Benoit Deville-Stoetzel" }]
 keywords = ["chemistry", "organic chemistry", "rdkit", "smiles", "reaction prediction", "education"]
 classifiers = [
     "Programming Language :: Python :: 3",
